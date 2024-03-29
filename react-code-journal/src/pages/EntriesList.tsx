@@ -40,19 +40,19 @@ export function EntriesList() {
                       alt="image"
                     />
                   </div>
-                </div>
-                <div className="column-half">
-                  <div className="row">
-                    <div className="column-full d-flex justify-between align-center">
-                      <h3>{entry.title}</h3>
-                      <FaPencil
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          handleEdit(entry);
-                        }}></FaPencil>
+                  <div className="column-half">
+                    <div className="row">
+                      <div className="column-full d-flex justify-between align-center">
+                        <h3>{entry.title}</h3>
+                        <FaPencil
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => {
+                            handleEdit(entry);
+                          }}></FaPencil>
+                      </div>
                     </div>
+                    <p>{entry.notes}</p>
                   </div>
-                  <p>{entry.notes}</p>
                 </div>
               </li>
             ))}

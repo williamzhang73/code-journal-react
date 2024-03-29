@@ -8,7 +8,7 @@ export function Header() {
           <div className="row">
             <div className="column-full d-flex align-center">
               <h1 className="white-text">Code Journal</h1>
-              <h3>
+              <h3 style={{ marginLeft: '1rem' }}>
                 <Link style={{ color: 'white' }} to="/entrylist">
                   Entries
                 </Link>
