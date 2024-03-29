@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { addEntry, type Data, type UnsavedEntry, type Entry } from '../data';
+import { addEntry, updateEntry, removeEntry, type UnsavedEntry } from '../data';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export function EntryForm() {
@@ -12,14 +12,27 @@ export function EntryForm() {
   const navigate = useNavigate();
   const modal = useRef<HTMLDialogElement>(null);
 
-  function handleSaveClick(event: MouseEvent) {
-    event.preventDefault();
+  function handleSaveClick(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
     const unSavedEntry: UnsavedEntry = { title, photoUrl: url, notes };
-    addEntry(unSavedEntry);
+    event.preventDefault();
+    if (isEditing) {
+      const entryId = data.entryId;
+      const entry = { title, photoUrl: url, notes, entryId };
+      updateEntry(entry);
+    } else {
+      addEntry(unSavedEntry);
+    }
     navigate('/entrylist');
   }
 
-  /*   console.log('data: ', data); */
+  function handleDelete() {
+    const entryId = data.entryId;
+    removeEntry(entryId);
+    navigate('/entrylist');
+    modal.current?.close();
+  }
   return (
     <>
       <div className="container">
@@ -86,10 +99,16 @@ export function EntryForm() {
           <div className="row">
             <div className="column-full d-flex justify-between">
               {isEditing ? (
-                <button className=" delete-entry-button">Delete Entry</button>
+                <button
+                  className=" delete-entry-button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    modal.current?.showModal();
+                  }}>
+                  Delete Entry
+                </button>
               ) : (
                 <button
-                  onClick={() => modal.current?.showModal()}
                   className=" invisible delete-entry-button"
                   style={{ cursor: 'pointer' }}>
                   Delete Entry
@@ -103,6 +122,7 @@ export function EntryForm() {
             </div>
           </div>
         </form>
+
         <dialog ref={modal}>
           <div className="modalcontainer">
             <div className="modalrow">
@@ -115,7 +135,9 @@ export function EntryForm() {
                   onClick={() => modal.current?.close()}>
                   Cancel
                 </button>
-                <button className="modal-button red-background white-text">
+                <button
+                  className="modal-button red-background white-text"
+                  onClick={handleDelete}>
                   Confirm
                 </button>
               </div>
