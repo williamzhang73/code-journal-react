@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { type Entry, readEntries } from '../data';
+import { FaPencil } from 'react-icons/fa6';
 export function EntriesList() {
-  const [entries, setEntries] = useState<Entry[]>([]);
+  const [entries, setEntries] = useState<Entry[]>();
   useEffect(() => {
     const myEntries = readEntries();
     setEntries(myEntries);
-  }, [entries]);
+  }, []);
+  const navigate = useNavigate();
+
+  function handleEdit(entry: Entry) {
+    navigate('/', { state: entry });
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -22,18 +29,28 @@ export function EntriesList() {
       <div className="row">
         <div className="column-full">
           <ul className="entry-ul">
-            {entries.map((entry, index) => (
+            {entries?.map((entry, index) => (
               <li key={index}>
-                <div>
-                  <img src={entry.photoUrl} alt="image" />
-                </div>
-                <div>
-                  <div>
-                    <h3>{entry.title}</h3>
+                <div className="row">
+                  <div className="column-half">
+                    <img
+                      className="input-b radius form-image"
+                      src={entry.photoUrl}
+                      alt="image"
+                    />
                   </div>
-                  <p>pencil</p>
                 </div>
-                <p>{entry.notes}</p>
+                <div className="column-half">
+                  <div className="row">
+                    <div className="column-full d-flex justify-between align-center">
+                      <h3>{entry.title}</h3>
+                      <FaPencil
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleEdit(entry)}></FaPencil>
+                    </div>
+                  </div>
+                  <p>{entry.notes}</p>
+                </div>
               </li>
             ))}
           </ul>

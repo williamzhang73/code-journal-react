@@ -1,24 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, MouseEventHandler } from 'react';
 import { addEntry, type Data, type UnsavedEntry, type Entry } from '../data';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 export function EntryForm() {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [notes, setNotes] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {});
-  function handleSaveClick(e: Event) {
-    e.preventDefault();
+  function handleSaveClick(event: MouseEvent) {
+    event.preventDefault();
     const unSavedEntry: UnsavedEntry = { title, photoUrl: url, notes };
     addEntry(unSavedEntry);
     navigate('/entrylist');
   }
+  const location = useLocation();
+  const data = location.state;
   return (
     <>
       <div className="container">
         <div className="row">
           <div className="column-full d-flex justify-between">
             <h1 id="formH1">New Entry</h1>
+            <h1 className="invisible">Edit Entry</h1>
           </div>
         </div>
         <form id="entryForm">
