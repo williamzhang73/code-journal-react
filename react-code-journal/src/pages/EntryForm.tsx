@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
-
+import { addEntry, type Data, type UnsavedEntry, type Entry } from '../data';
+import { useNavigate } from 'react-router-dom';
 export function EntryForm() {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [notes, setNotes] = useState('');
-
+  const navigate = useNavigate();
   useEffect(() => {});
-
+  function handleSaveClick(e: Event) {
+    e.preventDefault();
+    const unSavedEntry: UnsavedEntry = { title, photoUrl: url, notes };
+    addEntry(unSavedEntry);
+    navigate('/entrylist');
+  }
   return (
     <>
       <div className="container">
@@ -71,7 +77,9 @@ export function EntryForm() {
               <button className="invisible delete-entry-button">
                 Delete Entry
               </button>
-              <button className="input-b-radius text-padding purple-background white-text">
+              <button
+                onClick={handleSaveClick}
+                className="input-b-radius text-padding purple-background white-text">
                 Save
               </button>
             </div>
