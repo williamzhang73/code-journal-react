@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { type Entry, readEntries } from '../data';
 import { FaPencil } from 'react-icons/fa6';
-type Props = {
-  Edit: () => void;
-};
-export function EntriesList({ Edit }: Props) {
+
+export function EntriesList() {
   const [entries, setEntries] = useState<Entry[]>();
   useEffect(() => {
     const myEntries = readEntries();
@@ -22,7 +20,7 @@ export function EntriesList({ Edit }: Props) {
       <div className="row">
         <div className="column-full d-flex justify-between align-center">
           <h1>Entries</h1>
-          <h3 onClick={Edit}>
+          <h3>
             <Link className="white-text form-link" to="/">
               New
             </Link>
@@ -51,7 +49,6 @@ export function EntriesList({ Edit }: Props) {
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
                           handleEdit(entry);
-                          Edit();
                         }}></FaPencil>
                     </div>
                   </div>

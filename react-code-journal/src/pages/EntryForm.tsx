@@ -1,19 +1,17 @@
-import { useState, useEffect, MouseEventHandler } from 'react';
+import { useState, useRef } from 'react';
 import { addEntry, type Data, type UnsavedEntry, type Entry } from '../data';
 import { useNavigate, useLocation } from 'react-router-dom';
-type Props = {
-  isEditing: boolean;
-};
-export function EntryForm({ isEditing }: Props) {
+
+export function EntryForm() {
   const location = useLocation();
   const data = location.state;
+  const isEditing = data ? true : false;
   const [title, setTitle] = useState(isEditing ? data.title : '');
-  const [url, setUrl] = useState(
-    isEditing ? data.photoUrl : 'images/placeholder-image-square.jpg'
-  );
+  const [url, setUrl] = useState(isEditing ? data.photoUrl : '');
   const [notes, setNotes] = useState(isEditing ? data.notes : '');
   const navigate = useNavigate();
-  /*   useEffect(() => {}); */
+  const modal = useRef<HTMLDialogElement>(null);
+
   function handleSaveClick(event: MouseEvent) {
     event.preventDefault();
     const unSavedEntry: UnsavedEntry = { title, photoUrl: url, notes };
@@ -39,7 +37,7 @@ export function EntryForm({ isEditing }: Props) {
             <div className="column-half">
               <img
                 className="input-b-radius form-image"
-                src={url?}
+                src={url ? url : 'images/placeholder-image-square.jpg'}
                 alt="images"
               />
             </div>
@@ -90,7 +88,10 @@ export function EntryForm({ isEditing }: Props) {
               {isEditing ? (
                 <button className=" delete-entry-button">Delete Entry</button>
               ) : (
-                <button className=" invisible delete-entry-button">
+                <button
+                  onClick={() => modal.current?.showModal()}
+                  className=" invisible delete-entry-button"
+                  style={{ cursor: 'pointer' }}>
                   Delete Entry
                 </button>
               )}
@@ -102,6 +103,25 @@ export function EntryForm({ isEditing }: Props) {
             </div>
           </div>
         </form>
+        <dialog ref={modal}>
+          <div className="modalcontainer">
+            <div className="modalrow">
+              <div className="column-full d-flex justify-center">
+                <p>Are you sure you want to delete this entry?</p>
+              </div>
+              <div className="column-full d-flex justify-between">
+                <button
+                  className="modal-button"
+                  onClick={() => modal.current?.close()}>
+                  Cancel
+                </button>
+                <button className="modal-button red-background white-text">
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </dialog>
       </div>
     </>
   );
