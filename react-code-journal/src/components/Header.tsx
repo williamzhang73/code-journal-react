@@ -9,7 +9,9 @@ export function Header() {
             <div className="column-full d-flex align-center">
               <h1 className="white-text">Code Journal</h1>
               <h3>
-                <Link to="/">Entries</Link>
+                <Link style={{ color: 'white' }} to="/entrylist">
+                  Entries
+                </Link>
               </h3>
             </div>
           </div>

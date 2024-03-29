@@ -1,33 +1,64 @@
+import { useState, useEffect } from 'react';
+
 export function EntryForm() {
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
+  const [notes, setNotes] = useState('');
+
+  useEffect(() => {});
+
   return (
     <>
-      <div>
-        <div>
-          <div>
+      <div className="container">
+        <div className="row">
+          <div className="column-full d-flex justify-between">
             <h1 id="formH1">New Entry</h1>
           </div>
         </div>
         <form id="entryForm">
-          <div>
-            <div>
-              <img src={''} alt="images" />
+          <div className="row margin-bottom-1">
+            <div className="column-half">
+              <img
+                className="input-b-radius form-image"
+                src={url ? url : 'images/placeholder-image-square.jpg'}
+                alt="images"
+              />
             </div>
-            <div>
+            <div className="column-half">
               <label>
                 Title:
-                <input type="text" required name="title" />
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="input-b-color text-padding-input-b-radius purple-outline input-height margin-bottom-2 d-block width-100"
+                  type="text"
+                  required
+                  name="title"
+                />
               </label>
               <label>
                 Photo URL:
-                <input type="text" required name="photoUrl" />
+                <input
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="input-b-color text-padding input-b-radius purple-outline input-height margin-bottom-2 d-block width-100"
+                  type="text"
+                  required
+                  name="photoUrl"
+                />
               </label>
             </div>
           </div>
-          <div>
-            <div>
-              <label>
+          <div className="row margin-bottom-1">
+            <div className="column-full">
+              <label className="margin-bottom-1 d-block">
                 Notes:
                 <textarea
+                  value={notes}
+                  onChange={(e) => {
+                    setNotes(e.target.value);
+                  }}
+                  className="input-b-color text-padding input-b-radius purple-outline d-block width-100"
                   required
                   name="message"
                   cols={30}
@@ -35,10 +66,14 @@ export function EntryForm() {
               </label>
             </div>
           </div>
-          <div>
-            <div>
-              <button>Delete Entry</button>
-              <button>Save</button>
+          <div className="row">
+            <div className="column-full d-flex justify-between">
+              <button className="invisible delete-entry-button">
+                Delete Entry
+              </button>
+              <button className="input-b-radius text-padding purple-background white-text">
+                Save
+              </button>
             </div>
           </div>
         </form>
