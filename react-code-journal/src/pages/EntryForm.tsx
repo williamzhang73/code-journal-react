@@ -1,28 +1,37 @@
 import { useState, useEffect, MouseEventHandler } from 'react';
 import { addEntry, type Data, type UnsavedEntry, type Entry } from '../data';
 import { useNavigate, useLocation } from 'react-router-dom';
-export function EntryForm() {
-  const [title, setTitle] = useState('');
-  const [url, setUrl] = useState('');
-  const [notes, setNotes] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
+type Props = {
+  isEditing: boolean;
+};
+export function EntryForm({ isEditing }: Props) {
+  const location = useLocation();
+  const data = location.state;
+  const [title, setTitle] = useState(isEditing ? data.title : '');
+  const [url, setUrl] = useState(
+    isEditing ? data.photoUrl : 'images/placeholder-image-square.jpg'
+  );
+  const [notes, setNotes] = useState(isEditing ? data.notes : '');
   const navigate = useNavigate();
-  useEffect(() => {});
+  /*   useEffect(() => {}); */
   function handleSaveClick(event: MouseEvent) {
     event.preventDefault();
     const unSavedEntry: UnsavedEntry = { title, photoUrl: url, notes };
     addEntry(unSavedEntry);
     navigate('/entrylist');
   }
-  const location = useLocation();
-  const data = location.state;
+
+  /*   console.log('data: ', data); */
   return (
     <>
       <div className="container">
         <div className="row">
           <div className="column-full d-flex justify-between">
-            <h1 id="formH1">New Entry</h1>
-            <h1 className="invisible">Edit Entry</h1>
+            {isEditing ? (
+              <h1 className="">Edit Entry</h1>
+            ) : (
+              <h1 id="formH1">New Entry</h1>
+            )}
           </div>
         </div>
         <form id="entryForm">
@@ -30,7 +39,7 @@ export function EntryForm() {
             <div className="column-half">
               <img
                 className="input-b-radius form-image"
-                src={url ? url : 'images/placeholder-image-square.jpg'}
+                src={url?}
                 alt="images"
               />
             </div>
@@ -78,9 +87,13 @@ export function EntryForm() {
           </div>
           <div className="row">
             <div className="column-full d-flex justify-between">
-              <button className="invisible delete-entry-button">
-                Delete Entry
-              </button>
+              {isEditing ? (
+                <button className=" delete-entry-button">Delete Entry</button>
+              ) : (
+                <button className=" invisible delete-entry-button">
+                  Delete Entry
+                </button>
+              )}
               <button
                 onClick={handleSaveClick}
                 className="input-b-radius text-padding purple-background white-text">
